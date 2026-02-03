@@ -20,21 +20,6 @@ The backend is built using Node.js and Express, follows an MVC architecture, and
 - bcrypt (password hashing)
 
 ---
-backend/
-├── server.js
-├── .env
-└── src/
-├── app.js
-├── config/
-├── controllers/
-├── models/
-├── routes/
-├── middleware/
-├── services/
-├── utils/
-└── validators/
-
----
 ## 🔐 Authentication
 - Users register using a **unique roll number**
 - Passwords are stored using secure hashing
@@ -90,6 +75,18 @@ Authorization: Bearer <token>
 ## 📜 License
 This backend is developed for educational and academic purposes.
 
-
 ## 📂 Folder Structure
+backend/
+├── server.js
+├── .env
+└── src/
+├── app.js
+├── config/
+├── controllers/
+├── models/
+├── routes/
+├── middleware/
+├── services/
+├── utils/
+└── validators/
 
