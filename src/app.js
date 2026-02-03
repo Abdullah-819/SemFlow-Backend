@@ -3,6 +3,7 @@ import cors from "cors"
 import authRoutes from "./routes/auth.routes.js"
 import courseRoutes from "./routes/course.routes.js"
 import studyLogRoutes from "./routes/studyLog.routes.js"
+import errorHandler from "./middleware/error.middleware.js"
 
 const app = express()
 
@@ -16,5 +17,7 @@ app.use("/api/logs", studyLogRoutes)
 app.get("/", (req, res) => {
   res.send("Semflow API Running")
 })
+
+app.use(errorHandler)
 
 export default app
