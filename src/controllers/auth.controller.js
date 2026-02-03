@@ -1,17 +1,20 @@
 import User from "../models/user.model.js"
 import { hashPassword, comparePassword } from "../utils/hash.js"
 import { generateToken } from "../config/jwt.js"
+import asyncHandler from "../utils/asyncHandler.js"
 
-export const register = async (req, res) => {
+export const register = asyncHandler(async (req, res) => {
   const { rollNumber, displayName, password } = req.body
 
   if (!rollNumber || !displayName || !password) {
-    return res.status(400).json({ message: "All fields required" })
+    res.status(400)
+    throw new Error("All fields required")
   }
 
   const existingUser = await User.findOne({ rollNumber })
   if (existingUser) {
-    return res.status(409).json({ message: "Roll number already registered" })
+    res.status(409)
+    throw new Error("Roll number already registered")
   }
 
   const hashedPassword = await hashPassword(password)
@@ -32,23 +35,26 @@ export const register = async (req, res) => {
       displayName: user.displayName
     }
   })
-}
+})
 
-export const login = async (req, res) => {
+export const login = asyncHandler(async (req, res) => {
   const { rollNumber, password } = req.body
 
   if (!rollNumber || !password) {
-    return res.status(400).json({ message: "All fields required" })
+    res.status(400)
+    throw new Error("All fields required")
   }
 
   const user = await User.findOne({ rollNumber })
   if (!user) {
-    return res.status(401).json({ message: "Invalid credentials" })
+    res.status(401)
+    throw new Error("Invalid credentials")
   }
 
   const isMatch = await comparePassword(password, user.password)
   if (!isMatch) {
-    return res.status(401).json({ message: "Invalid credentials" })
+    res.status(401)
+    throw new Error("Invalid credentials")
   }
 
   const token = generateToken({ id: user._id })
@@ -61,4 +67,4 @@ export const login = async (req, res) => {
       displayName: user.displayName
     }
   })
-}
+})
