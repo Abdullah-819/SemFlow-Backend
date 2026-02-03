@@ -1,6 +1,18 @@
 import Course from "../models/course.model.js"
+import asyncHandler from "../utils/asyncHandler.js"
+import { requireFields } from "../utils/validators.js"
 
-export const createCourse = async (req, res) => {
+export const createCourse = asyncHandler(async (req, res) => {
+  const missing = requireFields(
+    ["courseName", "creditHours", "theoryAssignments", "theoryQuizzes", "hasLab"],
+    req.body
+  )
+
+  if (missing) {
+    res.status(400)
+    throw new Error(`${missing} is required`)
+  }
+
   const {
     courseName,
     creditHours,
@@ -29,38 +41,40 @@ export const createCourse = async (req, res) => {
 
   const course = await Course.create(courseData)
   res.status(201).json(course)
-}
+})
 
-export const getCourses = async (req, res) => {
+export const getCourses = asyncHandler(async (req, res) => {
   const courses = await Course.find({ user: req.user._id })
   res.json(courses)
-}
+})
 
-export const updateCourse = async (req, res) => {
+export const updateCourse = asyncHandler(async (req, res) => {
   const course = await Course.findOne({
     _id: req.params.id,
     user: req.user._id
   })
 
   if (!course) {
-    return res.status(404).json({ message: "Course not found" })
+    res.status(404)
+    throw new Error("Course not found")
   }
 
   Object.assign(course, req.body)
   await course.save()
 
   res.json(course)
-}
+})
 
-export const deleteCourse = async (req, res) => {
+export const deleteCourse = asyncHandler(async (req, res) => {
   const course = await Course.findOneAndDelete({
     _id: req.params.id,
     user: req.user._id
   })
 
   if (!course) {
-    return res.status(404).json({ message: "Course not found" })
+    res.status(404)
+    throw new Error("Course not found")
   }
 
   res.json({ message: "Course deleted" })
-}
+})

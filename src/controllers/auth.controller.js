@@ -2,14 +2,20 @@ import User from "../models/user.model.js"
 import { hashPassword, comparePassword } from "../utils/hash.js"
 import { generateToken } from "../config/jwt.js"
 import asyncHandler from "../utils/asyncHandler.js"
+import { requireFields } from "../utils/validators.js"
 
 export const register = asyncHandler(async (req, res) => {
-  const { rollNumber, displayName, password } = req.body
+  const missing = requireFields(
+    ["rollNumber", "displayName", "password"],
+    req.body
+  )
 
-  if (!rollNumber || !displayName || !password) {
+  if (missing) {
     res.status(400)
-    throw new Error("All fields required")
+    throw new Error(`${missing} is required`)
   }
+
+  const { rollNumber, displayName, password } = req.body
 
   const existingUser = await User.findOne({ rollNumber })
   if (existingUser) {
@@ -38,12 +44,14 @@ export const register = asyncHandler(async (req, res) => {
 })
 
 export const login = asyncHandler(async (req, res) => {
-  const { rollNumber, password } = req.body
+  const missing = requireFields(["rollNumber", "password"], req.body)
 
-  if (!rollNumber || !password) {
+  if (missing) {
     res.status(400)
-    throw new Error("All fields required")
+    throw new Error(`${missing} is required`)
   }
+
+  const { rollNumber, password } = req.body
 
   const user = await User.findOne({ rollNumber })
   if (!user) {
