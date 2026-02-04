@@ -26,7 +26,7 @@ const courseSchema = new mongoose.Schema(
     },
     hasLab: {
       type: Boolean,
-      required: true
+      required: false
     },
     labHours: {
       type: Number
