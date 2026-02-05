@@ -18,11 +18,13 @@ const studyLogSchema = new mongoose.Schema(
     },
     topicStudied: {
       type: String,
-      trim: true
+      trim: true,
+      default: ""
     },
     topicNotStudied: {
       type: String,
-      trim: true
+      trim: true,
+      default: ""
     },
     quizOccurred: {
       type: Boolean,
@@ -30,7 +32,8 @@ const studyLogSchema = new mongoose.Schema(
     },
     remarks: {
       type: String,
-      trim: true
+      trim: true,
+      default: ""
     },
     status: {
       type: String,

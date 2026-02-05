@@ -11,9 +11,9 @@ const router = express.Router()
 
 router.use(authMiddleware)
 
-router.post("/:courseId", addLog)
-router.get("/:courseId", getLogsByCourse)
-router.put("/edit/:id", updateLog)
+router.post("/course/:courseId", addLog)
+router.get("/course/:courseId", getLogsByCourse)
+router.put("/:id", updateLog)
 router.delete("/:id", deleteLog)
 
 export default router
