@@ -108,3 +108,48 @@ export const login = asyncHandler(async (req, res) => {
     }
   })
 })
+
+
+export const updateProfilePhoto = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id)
+
+  if (!user) {
+    res.status(404)
+    throw new Error("User not found")
+  }
+
+  if (!req.file) {
+    res.status(400)
+    throw new Error("No image uploaded")
+  }
+
+  const streamifier = (await import("streamifier")).default
+
+  if (user.cloudinaryId) {
+    try {
+      await cloudinary.uploader.destroy(user.cloudinaryId)
+    } catch {}
+  }
+
+  const result = await new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      { folder: "semflow_profiles" },
+      (error, result) => {
+        if (error) return reject(error)
+        resolve(result)
+      }
+    )
+    streamifier.createReadStream(req.file.buffer).pipe(stream)
+  })
+
+  user.profilePic = result.secure_url
+  user.cloudinaryId = result.public_id
+  await user.save()
+
+  res.json({
+    id: user._id,
+    displayName: user.displayName,
+    rollNumber: user.rollNumber,
+    profilePic: user.profilePic
+  })
+})
