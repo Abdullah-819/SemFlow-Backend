@@ -99,14 +99,18 @@ export const login = asyncHandler(async (req, res) => {
 
   const token = generateToken({ id: user._id })
 
-  res.json({
-    token,
-    user: {
-      id: user._id,
-      rollNumber: user.rollNumber,
-      displayName: user.displayName
-    }
-  })
+res.json({
+  token,
+  user: {
+    id: user._id,
+    rollNumber: user.rollNumber,
+    displayName: user.displayName,
+    profilePic: user.profilePic || ""
+  }
+})
+
+
+
 })
 
 
