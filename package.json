@@ -3,21 +3,24 @@
   "version": "1.0.0",
   "description": "This is the backend service for **Semflow**, a secure and scalable semester management and daily study tracking application.\r The backend is built using Node.js and Express, follows an MVC architecture, and provides RESTful APIs for authentication, course management, daily study logs, and AI-assisted academic insights.",
   "main": "src/server.js",
-"scripts": {
-  "start": "node src/server.js",
-  "dev": "nodemon src/server.js"
-},
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
   "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^3.0.3",
+    "cloudinary": "^2.9.0",
     "cors": "^2.8.6",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
-    "mongoose": "^9.1.5"
+    "mongoose": "^9.1.5",
+    "multer": "^2.0.2",
+    "streamifier": "^0.1.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.11"
