@@ -146,10 +146,20 @@ export const updateProfilePhoto = asyncHandler(async (req, res) => {
   user.cloudinaryId = result.public_id
   await user.save()
 
-  res.json({
+
+  
+const token = req.headers.authorization?.split(" ")[1]
+
+res.json({
+  token,
+  user: {
     id: user._id,
     displayName: user.displayName,
     rollNumber: user.rollNumber,
     profilePic: user.profilePic
-  })
+  }
+})
+
+
+
 })
